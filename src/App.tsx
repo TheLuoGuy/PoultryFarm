@@ -1,7 +1,16 @@
-import { Suspense } from "react";
+import { Suspense, lazy } from "react";
 import { useRoutes, Routes, Route } from "react-router-dom";
 import Home from "./components/home";
 import routes from "tempo-routes";
+
+// Lazy load pages for better performance
+const Dashboard = lazy(() => import("./pages/dashboard"));
+const Inventory = lazy(() => import("./pages/inventory"));
+const Financials = lazy(() => import("./pages/financials"));
+const Customers = lazy(() => import("./pages/customers"));
+const Admin = lazy(() => import("./pages/admin"));
+const Profile = lazy(() => import("./pages/profile"));
+const Settings = lazy(() => import("./pages/settings"));
 
 function App() {
   return (
@@ -9,6 +18,18 @@ function App() {
       <>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/inventory" element={<Inventory />} />
+          <Route path="/financials" element={<Financials />} />
+          <Route path="/customers" element={<Customers />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/settings" element={<Settings />} />
+
+          {/* Add this before any catchall route */}
+          {import.meta.env.VITE_TEMPO === "true" && (
+            <Route path="/tempobook/*" />
+          )}
         </Routes>
         {import.meta.env.VITE_TEMPO === "true" && useRoutes(routes)}
       </>

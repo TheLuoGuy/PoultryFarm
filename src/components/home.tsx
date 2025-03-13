@@ -2,12 +2,17 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import LoginForm from "./auth/LoginForm";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
+
   // Mock function to handle login submission
   const handleLogin = (values: any) => {
     console.log("Login attempt:", values);
     // In a real implementation, this would call an authentication service
+    // For now, just navigate to dashboard
+    navigate("/dashboard");
   };
 
   return (
