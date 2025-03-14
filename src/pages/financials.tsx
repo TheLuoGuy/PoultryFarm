@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useCurrency } from "@/lib/currency";
 import { Helmet } from "react-helmet";
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
@@ -28,6 +29,7 @@ import GenerateReportForm from "@/components/financials/GenerateReportForm";
 const Financials = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [activeDialog, setActiveDialog] = useState<string | null>(null);
+  const { formatCurrency } = useCurrency();
 
   const handleFormSubmit = (formData: any) => {
     console.log("Form submitted:", formData);
@@ -65,7 +67,9 @@ const Financials = () => {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">$24,680.00</div>
+                  <div className="text-2xl font-bold">
+                    {formatCurrency(24680)}
+                  </div>
                   <p className="flex items-center text-xs mt-1">
                     <ArrowUp className="mr-1 h-4 w-4 text-green-500" />
                     <span className="text-green-500">12.5%</span>
@@ -86,7 +90,9 @@ const Financials = () => {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">$16,240.00</div>
+                  <div className="text-2xl font-bold">
+                    {formatCurrency(16240)}
+                  </div>
                   <p className="flex items-center text-xs mt-1">
                     <ArrowUp className="mr-1 h-4 w-4 text-red-500" />
                     <span className="text-red-500">8.3%</span>
@@ -107,7 +113,9 @@ const Financials = () => {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">$8,440.00</div>
+                  <div className="text-2xl font-bold">
+                    {formatCurrency(8440)}
+                  </div>
                   <p className="flex items-center text-xs mt-1">
                     <ArrowUp className="mr-1 h-4 w-4 text-green-500" />
                     <span className="text-green-500">18.7%</span>
@@ -128,7 +136,9 @@ const Financials = () => {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">$3,250.00</div>
+                  <div className="text-2xl font-bold">
+                    {formatCurrency(3250)}
+                  </div>
                   <p className="flex items-center text-xs mt-1">
                     <ArrowDown className="mr-1 h-4 w-4 text-green-500" />
                     <span className="text-green-500">5.2%</span>
@@ -222,7 +232,7 @@ const Financials = () => {
                         <td className="border p-2">2023-06-15</td>
                         <td className="border p-2">Egg Sales - Retail</td>
                         <td className="border p-2">Product Sales</td>
-                        <td className="border p-2">$1,250.00</td>
+                        <td className="border p-2">{formatCurrency(1250)}</td>
                         <td className="border p-2">
                           <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">
                             Completed
@@ -233,7 +243,7 @@ const Financials = () => {
                         <td className="border p-2">2023-06-12</td>
                         <td className="border p-2">Egg Sales - Wholesale</td>
                         <td className="border p-2">Product Sales</td>
-                        <td className="border p-2">$3,450.00</td>
+                        <td className="border p-2">{formatCurrency(3450)}</td>
                         <td className="border p-2">
                           <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">
                             Completed
@@ -246,7 +256,7 @@ const Financials = () => {
                           Broiler Sales - Restaurant A
                         </td>
                         <td className="border p-2">Bird Sales</td>
-                        <td className="border p-2">$2,800.00</td>
+                        <td className="border p-2">{formatCurrency(2800)}</td>
                         <td className="border p-2">
                           <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs">
                             Pending
@@ -259,7 +269,7 @@ const Financials = () => {
                           Egg Sales - Supermarket B
                         </td>
                         <td className="border p-2">Product Sales</td>
-                        <td className="border p-2">$1,850.00</td>
+                        <td className="border p-2">{formatCurrency(1850)}</td>
                         <td className="border p-2">
                           <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">
                             Completed
@@ -270,7 +280,7 @@ const Financials = () => {
                         <td className="border p-2">2023-06-01</td>
                         <td className="border p-2">Manure Sales</td>
                         <td className="border p-2">Other</td>
-                        <td className="border p-2">$450.00</td>
+                        <td className="border p-2">{formatCurrency(450)}</td>
                         <td className="border p-2">
                           <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">
                             Completed
@@ -307,7 +317,7 @@ const Financials = () => {
                           Feed Purchase - Supplier X
                         </td>
                         <td className="border p-2">Feed</td>
-                        <td className="border p-2">$3,200.00</td>
+                        <td className="border p-2">{formatCurrency(3200)}</td>
                         <td className="border p-2">
                           <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">
                             Paid
@@ -318,7 +328,7 @@ const Financials = () => {
                         <td className="border p-2">2023-06-10</td>
                         <td className="border p-2">Medication - Vitamins</td>
                         <td className="border p-2">Medicine</td>
-                        <td className="border p-2">$850.00</td>
+                        <td className="border p-2">{formatCurrency(850)}</td>
                         <td className="border p-2">
                           <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">
                             Paid
@@ -329,7 +339,7 @@ const Financials = () => {
                         <td className="border p-2">2023-06-08</td>
                         <td className="border p-2">Electricity Bill</td>
                         <td className="border p-2">Utilities</td>
-                        <td className="border p-2">$1,250.00</td>
+                        <td className="border p-2">{formatCurrency(1250)}</td>
                         <td className="border p-2">
                           <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">
                             Paid
@@ -340,7 +350,7 @@ const Financials = () => {
                         <td className="border p-2">2023-06-05</td>
                         <td className="border p-2">Staff Salaries</td>
                         <td className="border p-2">Labor</td>
-                        <td className="border p-2">$4,500.00</td>
+                        <td className="border p-2">{formatCurrency(4500)}</td>
                         <td className="border p-2">
                           <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">
                             Paid
@@ -351,7 +361,7 @@ const Financials = () => {
                         <td className="border p-2">2023-06-01</td>
                         <td className="border p-2">Equipment Maintenance</td>
                         <td className="border p-2">Maintenance</td>
-                        <td className="border p-2">$750.00</td>
+                        <td className="border p-2">{formatCurrency(750)}</td>
                         <td className="border p-2">
                           <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs">
                             Pending

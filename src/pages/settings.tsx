@@ -8,9 +8,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { useCurrency, currencies } from "@/lib/currency";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const Settings = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const { currency, setCurrency } = useCurrency();
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -79,3 +82,29 @@ const Settings = () => {
                         <div className="space-y-2">
                           <Label htmlFor="timeFormat">Time Format</Label>
                           <select id="timeFormat" className="w-full p-2 border rounded-md">
+                            <option value="12" selected>12-hour (AM/PM)</option>
+                            <option value="24">24-hour</option>
+                          </select>
+                        </div>
+                        
+                        <div className="space-y-4 pt-4 border-t mt-4">
+                          <Label>Currency</Label>
+                          <RadioGroup 
+                            defaultValue={currency.code}
+                            onValueChange={(value) => {
+                              const selectedCurrency = currencies.find(c => c.code === value);
+                              if (selectedCurrency) setCurrency(selectedCurrency);
+                            }}
+                            className="grid grid-cols-1 md:grid-cols-2 gap-2"
+                          >
+                            {currencies.map((curr) => (
+                              <div key={curr.code} className="flex items-center space-x-2 border p-2 rounded-md">
+                                <RadioGroupItem value={curr.code} id={`currency-${curr.code}`} />
+                                <Label htmlFor={`currency-${curr.code}`} className="flex-1 cursor-pointer">
+                                  <div className="font-medium">{curr.name}</div>
+                                  <div className="text-sm text-muted-foreground">{curr.symbol} ({curr.code})</div>
+                                </Label>
+                              </div>
+                            ))}
+                          </RadioGroup>
+                        </div>

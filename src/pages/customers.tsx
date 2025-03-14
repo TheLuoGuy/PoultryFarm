@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useCurrency } from "@/lib/currency";
 import { Helmet } from "react-helmet";
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
@@ -25,6 +26,7 @@ const Customers = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeDialog, setActiveDialog] = useState<string | null>(null);
   const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
+  const { formatCurrency } = useCurrency();
 
   // Mock customer data
   const customers = [
@@ -36,7 +38,7 @@ const Customers = () => {
       phone: "(555) 123-4567",
       type: "Retail",
       lastPurchase: "2023-06-10",
-      totalSpent: "$12,450.00",
+      totalSpent: 12450.0,
     },
     {
       id: 2,
@@ -46,7 +48,7 @@ const Customers = () => {
       phone: "(555) 234-5678",
       type: "Restaurant",
       lastPurchase: "2023-06-15",
-      totalSpent: "$8,320.00",
+      totalSpent: 8320.0,
     },
     {
       id: 3,
@@ -56,7 +58,7 @@ const Customers = () => {
       phone: "(555) 345-6789",
       type: "Wholesale",
       lastPurchase: "2023-06-12",
-      totalSpent: "$24,780.00",
+      totalSpent: 24780.0,
     },
     {
       id: 4,
@@ -66,7 +68,7 @@ const Customers = () => {
       phone: "(555) 456-7890",
       type: "Bakery",
       lastPurchase: "2023-06-08",
-      totalSpent: "$5,640.00",
+      totalSpent: 5640.0,
     },
     {
       id: 5,
@@ -76,7 +78,7 @@ const Customers = () => {
       phone: "(555) 567-8901",
       type: "Distributor",
       lastPurchase: "2023-06-14",
-      totalSpent: "$32,150.00",
+      totalSpent: 32150,
     },
   ];
 
@@ -217,7 +219,7 @@ const Customers = () => {
                         </td>
                         <td className="p-3">{customer.lastPurchase}</td>
                         <td className="p-3 font-medium">
-                          {customer.totalSpent}
+                          {formatCurrency(customer.totalSpent)}
                         </td>
                         <td className="p-3">
                           <div className="flex space-x-2">

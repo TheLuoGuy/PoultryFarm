@@ -1,4 +1,5 @@
 import React from "react";
+import { useCurrency } from "@/lib/currency";
 import {
   Card,
   CardContent,
@@ -86,6 +87,7 @@ const PurchaseHistoryView = ({
   ],
   onRecordPayment = () => {},
 }: PurchaseHistoryViewProps) => {
+  const { formatCurrency } = useCurrency();
   // Calculate totals
   const totalPurchases = purchases.reduce(
     (sum, purchase) => sum + purchase.amount,
@@ -124,7 +126,7 @@ const PurchaseHistoryView = ({
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                ${totalPurchases.toFixed(2)}
+                {formatCurrency(totalPurchases)}
               </div>
             </CardContent>
           </Card>
@@ -137,7 +139,7 @@ const PurchaseHistoryView = ({
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                ${totalPayments.toFixed(2)}
+                {formatCurrency(totalPayments)}
               </div>
             </CardContent>
           </Card>
@@ -149,7 +151,9 @@ const PurchaseHistoryView = ({
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">${balance.toFixed(2)}</div>
+              <div className="text-2xl font-bold">
+                {formatCurrency(balance)}
+              </div>
               <p className="text-xs mt-1">
                 {balance > 0 ? "Outstanding balance" : "No outstanding balance"}
               </p>
@@ -187,7 +191,7 @@ const PurchaseHistoryView = ({
                         {purchase.invoiceNumber || "-"}
                       </td>
                       <td className="border p-2">
-                        ${purchase.amount.toFixed(2)}
+                        {formatCurrency(purchase.amount)}
                       </td>
                       <td className="border p-2">
                         <span
@@ -232,7 +236,7 @@ const PurchaseHistoryView = ({
                     <tr key={payment.id}>
                       <td className="border p-2">{payment.date}</td>
                       <td className="border p-2">
-                        ${payment.amount.toFixed(2)}
+                        {formatCurrency(payment.amount)}
                       </td>
                       <td className="border p-2">{payment.method}</td>
                       <td className="border p-2">{payment.reference || "-"}</td>

@@ -1,4 +1,5 @@
 import React from "react";
+import { useCurrency } from "@/lib/currency";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -50,6 +51,7 @@ const RecordExpenseForm = ({
   onSubmit = () => {},
   isLoading = false,
 }: RecordExpenseFormProps) => {
+  const { currency } = useCurrency();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -146,9 +148,19 @@ const RecordExpenseForm = ({
                 name="amount"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Amount ($)</FormLabel>
+                    <FormLabel>Amount</FormLabel>
                     <FormControl>
-                      <Input type="number" step="0.01" {...field} />
+                      <div className="relative">
+                        <div className="absolute left-3 top-2.5 text-muted-foreground">
+                          {currency.symbol}
+                        </div>
+                        <Input
+                          type="number"
+                          step="0.01"
+                          className="pl-10"
+                          {...field}
+                        />
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
