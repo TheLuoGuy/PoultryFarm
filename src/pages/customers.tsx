@@ -4,6 +4,11 @@ import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import AddCustomerForm from "@/components/customers/AddCustomerForm";
+import EditCustomerForm from "@/components/customers/EditCustomerForm";
+import PurchaseHistoryView from "@/components/customers/PurchaseHistoryView";
+import RecordPaymentForm from "@/components/customers/RecordPaymentForm";
 import {
   Search,
   Plus,
@@ -18,6 +23,8 @@ import {
 const Customers = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeDialog, setActiveDialog] = useState<string | null>(null);
+  const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
 
   // Mock customer data
   const customers = [
@@ -112,12 +119,50 @@ const Customers = () => {
                 />
               </div>
               <div className="flex flex-wrap gap-2">
-                <Button className="w-full sm:w-auto">
-                  <Plus className="h-4 w-4 mr-2" /> Add Customer
-                </Button>
-                <Button variant="outline" className="w-full sm:w-auto">
-                  <DollarSign className="h-4 w-4 mr-2" /> Record Payment
-                </Button>
+                <Dialog
+                  open={activeDialog === "add-customer"}
+                  onOpenChange={(open) => !open && setActiveDialog(null)}
+                >
+                  <DialogTrigger asChild>
+                    <Button
+                      className="w-full sm:w-auto"
+                      onClick={() => setActiveDialog("add-customer")}
+                    >
+                      <Plus className="h-4 w-4 mr-2" /> Add Customer
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-3xl">
+                    <AddCustomerForm
+                      onSubmit={(data) => {
+                        console.log("Add customer data:", data);
+                        setActiveDialog(null);
+                      }}
+                    />
+                  </DialogContent>
+                </Dialog>
+
+                <Dialog
+                  open={activeDialog === "record-payment"}
+                  onOpenChange={(open) => !open && setActiveDialog(null)}
+                >
+                  <DialogTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className="w-full sm:w-auto"
+                      onClick={() => setActiveDialog("record-payment")}
+                    >
+                      <DollarSign className="h-4 w-4 mr-2" /> Record Payment
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-3xl">
+                    <RecordPaymentForm
+                      onSubmit={(data) => {
+                        console.log("Record payment data:", data);
+                        setActiveDialog(null);
+                      }}
+                    />
+                  </DialogContent>
+                </Dialog>
               </div>
             </div>
 
@@ -176,20 +221,96 @@ const Customers = () => {
                         </td>
                         <td className="p-3">
                           <div className="flex space-x-2">
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              title="View History"
+                            <Dialog
+                              open={activeDialog === `history-${customer.id}`}
+                              onOpenChange={(open) =>
+                                !open && setActiveDialog(null)
+                              }
                             >
-                              <FileText className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              title="Edit Customer"
+                              <DialogTrigger asChild>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  title="View History"
+                                  onClick={() => {
+                                    setSelectedCustomer(customer);
+                                    setActiveDialog(`history-${customer.id}`);
+                                  }}
+                                >
+                                  <FileText className="h-4 w-4" />
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent className="max-w-4xl">
+                                <PurchaseHistoryView
+                                  customerId={customer.id}
+                                  customerName={customer.name}
+                                  onRecordPayment={() => {
+                                    setActiveDialog(`payment-${customer.id}`);
+                                  }}
+                                />
+                              </DialogContent>
+                            </Dialog>
+
+                            <Dialog
+                              open={activeDialog === `edit-${customer.id}`}
+                              onOpenChange={(open) =>
+                                !open && setActiveDialog(null)
+                              }
                             >
-                              <Edit className="h-4 w-4" />
-                            </Button>
+                              <DialogTrigger asChild>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  title="Edit Customer"
+                                  onClick={() => {
+                                    setSelectedCustomer(customer);
+                                    setActiveDialog(`edit-${customer.id}`);
+                                  }}
+                                >
+                                  <Edit className="h-4 w-4" />
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent className="max-w-3xl">
+                                <EditCustomerForm
+                                  customer={{
+                                    id: customer.id,
+                                    name: customer.name,
+                                    contactPerson: customer.contact,
+                                    email: customer.email,
+                                    phone: customer.phone,
+                                    type: customer.type.toLowerCase(),
+                                    address: "123 Main St, Anytown, USA",
+                                    notes: "",
+                                  }}
+                                  onSubmit={(data) => {
+                                    console.log("Edit customer data:", data);
+                                    setActiveDialog(null);
+                                  }}
+                                  onDelete={(id) => {
+                                    console.log("Delete customer:", id);
+                                    setActiveDialog(null);
+                                  }}
+                                />
+                              </DialogContent>
+                            </Dialog>
+
+                            <Dialog
+                              open={activeDialog === `payment-${customer.id}`}
+                              onOpenChange={(open) =>
+                                !open && setActiveDialog(null)
+                              }
+                            >
+                              <DialogContent className="max-w-3xl">
+                                <RecordPaymentForm
+                                  customerId={String(customer.id)}
+                                  customerName={customer.name}
+                                  onSubmit={(data) => {
+                                    console.log("Record payment data:", data);
+                                    setActiveDialog(null);
+                                  }}
+                                />
+                              </DialogContent>
+                            </Dialog>
                             <Button
                               variant="ghost"
                               size="icon"
