@@ -17,10 +17,22 @@ import {
   TrendingUp,
   TrendingDown,
   FileText,
+  Plus,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import RecordIncomeForm from "@/components/financials/RecordIncomeForm";
+import RecordExpenseForm from "@/components/financials/RecordExpenseForm";
+import GenerateReportForm from "@/components/financials/GenerateReportForm";
 
 const Financials = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [activeDialog, setActiveDialog] = useState<string | null>(null);
+
+  const handleFormSubmit = (formData: any) => {
+    console.log("Form submitted:", formData);
+    setActiveDialog(null); // Close the dialog after submission
+  };
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -126,6 +138,57 @@ const Financials = () => {
                   </p>
                 </CardContent>
               </Card>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex flex-wrap gap-3 mb-6">
+              <Dialog
+                open={activeDialog === "record-income"}
+                onOpenChange={(open) => !open && setActiveDialog(null)}
+              >
+                <DialogTrigger asChild>
+                  <Button onClick={() => setActiveDialog("record-income")}>
+                    <Plus className="h-4 w-4 mr-2" /> Record Income
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-3xl">
+                  <RecordIncomeForm onSubmit={handleFormSubmit} />
+                </DialogContent>
+              </Dialog>
+
+              <Dialog
+                open={activeDialog === "record-expense"}
+                onOpenChange={(open) => !open && setActiveDialog(null)}
+              >
+                <DialogTrigger asChild>
+                  <Button
+                    variant="outline"
+                    onClick={() => setActiveDialog("record-expense")}
+                  >
+                    <Plus className="h-4 w-4 mr-2" /> Record Expense
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-3xl">
+                  <RecordExpenseForm onSubmit={handleFormSubmit} />
+                </DialogContent>
+              </Dialog>
+
+              <Dialog
+                open={activeDialog === "generate-report"}
+                onOpenChange={(open) => !open && setActiveDialog(null)}
+              >
+                <DialogTrigger asChild>
+                  <Button
+                    variant="outline"
+                    onClick={() => setActiveDialog("generate-report")}
+                  >
+                    <FileText className="h-4 w-4 mr-2" /> Generate Report
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-3xl">
+                  <GenerateReportForm onSubmit={handleFormSubmit} />
+                </DialogContent>
+              </Dialog>
             </div>
 
             {/* Financial Details Tabs */}

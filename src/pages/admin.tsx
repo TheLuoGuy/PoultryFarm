@@ -265,9 +265,17 @@ const Admin = () => {
                       Configure farm-specific settings and parameters
                     </p>
                   </div>
-                  <Button>
-                    <Settings className="h-4 w-4 mr-2" /> Save Changes
-                  </Button>
+                  <div className="flex flex-wrap gap-2">
+                    <Button>
+                      <Plus className="h-4 w-4 mr-2" /> Add Coup
+                    </Button>
+                    <Button variant="outline">
+                      <Bell className="h-4 w-4 mr-2" /> Configure Alerts
+                    </Button>
+                    <Button variant="outline">
+                      <Settings className="h-4 w-4 mr-2" /> Save Changes
+                    </Button>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

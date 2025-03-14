@@ -13,14 +13,28 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 const formSchema = z.object({
   date: z.string().min(1, { message: "Date is required" }),
   category: z.string().min(1, { message: "Category is required" }),
   description: z.string().min(1, { message: "Description is required" }),
-  amount: z.coerce.number().min(0.01, { message: "Amount must be greater than 0" }),
+  amount: z.coerce
+    .number()
+    .min(0.01, { message: "Amount must be greater than 0" }),
   supplier: z.string().optional(),
   paymentMethod: z.string().min(1, { message: "Payment method is required" }),
   receiptNumber: z.string().optional(),
@@ -32,7 +46,10 @@ type RecordExpenseFormProps = {
   isLoading?: boolean;
 };
 
-const RecordExpenseForm = ({ onSubmit = () => {}, isLoading = false }: RecordExpenseFormProps) => {
+const RecordExpenseForm = ({
+  onSubmit = () => {},
+  isLoading = false,
+}: RecordExpenseFormProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -61,7 +78,10 @@ const RecordExpenseForm = ({ onSubmit = () => {}, isLoading = false }: RecordExp
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-4"
+          >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
@@ -83,7 +103,10 @@ const RecordExpenseForm = ({ onSubmit = () => {}, isLoading = false }: RecordExp
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Category</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select category" />
@@ -138,17 +161,28 @@ const RecordExpenseForm = ({ onSubmit = () => {}, isLoading = false }: RecordExp
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Supplier (Optional)</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select supplier" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="feed-supplier-x">Feed Supplier X</SelectItem>
-                        <SelectItem value="farm-equipment-co">Farm Equipment Co.</SelectItem>
-                        <SelectItem value="veterinary-supplies">Veterinary Supplies Inc.</SelectItem>
-                        <SelectItem value="utility-company">Utility Company</SelectItem>
+                        <SelectItem value="feed-supplier-x">
+                          Feed Supplier X
+                        </SelectItem>
+                        <SelectItem value="farm-equipment-co">
+                          Farm Equipment Co.
+                        </SelectItem>
+                        <SelectItem value="veterinary-supplies">
+                          Veterinary Supplies Inc.
+                        </SelectItem>
+                        <SelectItem value="utility-company">
+                          Utility Company
+                        </SelectItem>
                         <SelectItem value="other">Other</SelectItem>
                       </SelectContent>
                     </Select>
@@ -163,7 +197,10 @@ const RecordExpenseForm = ({ onSubmit = () => {}, isLoading = false }: RecordExp
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Payment Method</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select payment method" />
@@ -171,10 +208,14 @@ const RecordExpenseForm = ({ onSubmit = () => {}, isLoading = false }: RecordExp
                       </FormControl>
                       <SelectContent>
                         <SelectItem value="cash">Cash</SelectItem>
-                        <SelectItem value="bank-transfer">Bank Transfer</SelectItem>
+                        <SelectItem value="bank-transfer">
+                          Bank Transfer
+                        </SelectItem>
                         <SelectItem value="check">Check</SelectItem>
                         <SelectItem value="credit-card">Credit Card</SelectItem>
-                        <SelectItem value="mobile-payment">Mobile Payment</SelectItem>
+                        <SelectItem value="mobile-payment">
+                          Mobile Payment
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -187,3 +228,44 @@ const RecordExpenseForm = ({ onSubmit = () => {}, isLoading = false }: RecordExp
                 name="receiptNumber"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>Receipt Number (Optional)</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g. REC-2023-001" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="notes"
+                render={({ field }) => (
+                  <FormItem className="col-span-1 md:col-span-2">
+                    <FormLabel>Notes (Optional)</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Enter any additional notes"
+                        className="resize-none"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="pt-4">
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading ? "Recording..." : "Record Expense"}
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default RecordExpenseForm;

@@ -12,6 +12,7 @@ import {
   Trash2,
   Phone,
   Mail,
+  DollarSign,
 } from "lucide-react";
 
 const Customers = () => {
@@ -110,9 +111,14 @@ const Customers = () => {
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
-              <Button className="w-full sm:w-auto">
-                <Plus className="h-4 w-4 mr-2" /> Add Customer
-              </Button>
+              <div className="flex flex-wrap gap-2">
+                <Button className="w-full sm:w-auto">
+                  <Plus className="h-4 w-4 mr-2" /> Add Customer
+                </Button>
+                <Button variant="outline" className="w-full sm:w-auto">
+                  <DollarSign className="h-4 w-4 mr-2" /> Record Payment
+                </Button>
+              </div>
             </div>
 
             {/* Customer List */}
