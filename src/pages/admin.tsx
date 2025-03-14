@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import CurrencySelector from "@/components/admin/CurrencySelector";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Plus,
@@ -22,6 +23,7 @@ import {
   Shield,
   Bell,
   Download,
+  DollarSign,
 } from "lucide-react";
 
 const Admin = () => {
@@ -451,6 +453,26 @@ const Admin = () => {
                           </label>
                           <Input type="tel" defaultValue="(555) 123-4567" />
                         </div>
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium">
+                            Currency
+                          </label>
+                          <select className="w-full p-2 border rounded-md">
+                            <option value="UGX" selected>
+                              UGX - Ugandan Shilling
+                            </option>
+                            <option value="USD">$ - US Dollar</option>
+                            <option value="EUR">€ - Euro</option>
+                            <option value="GBP">£ - British Pound</option>
+                            <option value="KES">KSh - Kenyan Shilling</option>
+                            <option value="TZS">
+                              TSh - Tanzanian Shilling
+                            </option>
+                            <option value="RWF">RF - Rwandan Franc</option>
+                            <option value="NGN">₦ - Nigerian Naira</option>
+                            <option value="ZAR">R - South African Rand</option>
+                          </select>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
@@ -501,6 +523,8 @@ const Admin = () => {
                       </div>
                     </CardContent>
                   </Card>
+
+                  <CurrencySelector />
                 </div>
               </TabsContent>
 
