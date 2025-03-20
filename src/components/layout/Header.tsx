@@ -1,6 +1,6 @@
-import React from "react";
-import { Search, Bell } from "lucide-react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Search, Bell, User, Settings, LogOut } from "lucide-react";
 import ProfileMenu from "../profile/ProfileMenu";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
@@ -14,6 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 
 interface HeaderProps {
   title?: string;
@@ -31,6 +32,7 @@ const Header = ({
   userAvatar = "",
 }: HeaderProps) => {
   const [searchQuery, setSearchQuery] = React.useState("");
+  const [showNotifications, setShowNotifications] = useState(false);
   const navigate = useNavigate();
 
   const handleSearch = (e: React.FormEvent) => {
@@ -40,6 +42,46 @@ const Header = ({
 
   const handleLogout = () => {
     navigate("/");
+  };
+
+  // Mock notifications data
+  const notifications = [
+    {
+      id: 1,
+      title: "Low Feed Stock Alert",
+      message: "Feed stock for Coup #3 is below 20%. Please restock soon.",
+      time: "10:45 AM",
+      read: false,
+      type: "alert",
+    },
+    {
+      id: 2,
+      title: "Production Target Reached",
+      message: "Egg production target for this week has been reached.",
+      time: "Yesterday",
+      read: true,
+      type: "success",
+    },
+    {
+      id: 3,
+      title: "New Customer Added",
+      message: "A new customer 'Sunshine Grocers' has been added.",
+      time: "2 days ago",
+      read: false,
+      type: "info",
+    },
+  ];
+
+  const getTypeColor = (type: string) => {
+    switch (type) {
+      case "alert":
+        return "bg-red-100 text-red-800";
+      case "success":
+        return "bg-green-100 text-green-800";
+      case "info":
+      default:
+        return "bg-blue-100 text-blue-800";
+    }
   };
 
   return (
@@ -69,19 +111,87 @@ const Header = ({
         </form>
 
         {/* Notifications */}
-        <div className="relative">
-          <Button variant="ghost" size="icon" className="relative">
-            <Bell className="h-5 w-5" />
-            {notificationCount > 0 && (
-              <Badge
-                variant="destructive"
-                className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
+        <Popover open={showNotifications} onOpenChange={setShowNotifications}>
+          <PopoverTrigger asChild>
+            <Button variant="ghost" size="icon" className="relative">
+              <Bell className="h-5 w-5" />
+              {notificationCount > 0 && (
+                <Badge
+                  variant="destructive"
+                  className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
+                >
+                  {notificationCount}
+                </Badge>
+              )}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-80 p-0" align="end">
+            <div className="p-4 border-b border-gray-200">
+              <div className="flex justify-between items-center">
+                <h3 className="font-medium">Notifications</h3>
+                <Button
+                  variant="link"
+                  className="p-0 h-auto text-xs text-blue-500 hover:text-blue-700"
+                  onClick={() => {
+                    setShowNotifications(false);
+                    navigate("/notifications");
+                  }}
+                >
+                  View All
+                </Button>
+              </div>
+            </div>
+            <div className="max-h-[300px] overflow-y-auto">
+              {notifications.length === 0 ? (
+                <div className="p-4 text-center text-muted-foreground">
+                  No notifications
+                </div>
+              ) : (
+                <div>
+                  {notifications.map((notification) => (
+                    <div
+                      key={notification.id}
+                      className={`p-3 border-b border-gray-100 hover:bg-gray-50 ${!notification.read ? "bg-blue-50" : ""}`}
+                    >
+                      <div className="flex items-start gap-2">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <p className="font-medium text-sm truncate">
+                              {notification.title}
+                            </p>
+                            <Badge className={getTypeColor(notification.type)}>
+                              {notification.type.charAt(0).toUpperCase() +
+                                notification.type.slice(1)}
+                            </Badge>
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {notification.message}
+                          </p>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {notification.time}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="p-2 border-t border-gray-200">
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full"
+                onClick={() => {
+                  setShowNotifications(false);
+                  navigate("/notifications");
+                }}
               >
-                {notificationCount}
-              </Badge>
-            )}
-          </Button>
-        </div>
+                View All Notifications
+              </Button>
+            </div>
+          </PopoverContent>
+        </Popover>
 
         {/* User Profile */}
         <ProfileMenu

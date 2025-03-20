@@ -11,6 +11,8 @@ const Customers = lazy(() => import("./pages/customers"));
 const Admin = lazy(() => import("./pages/admin"));
 const Profile = lazy(() => import("./pages/profile"));
 const Settings = lazy(() => import("./pages/settings"));
+const Notifications = lazy(() => import("./pages/notifications"));
+const Help = lazy(() => import("./pages/help"));
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
           <Route path="/admin" element={<Admin />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/help" element={<Help />} />
 
           {/* Add this before any catchall route */}
           {import.meta.env.VITE_TEMPO === "true" && (

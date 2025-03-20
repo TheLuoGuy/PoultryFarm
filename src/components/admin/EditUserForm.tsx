@@ -22,6 +22,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import {
   Card,
   CardContent,
   CardDescription,
@@ -54,6 +62,8 @@ const passwordSchema = z
   });
 
 type EditUserFormProps = {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
   user?: z.infer<typeof formSchema>;
   onSubmit?: (values: z.infer<typeof formSchema>) => void;
   onResetPassword?: (values: z.infer<typeof passwordSchema>) => void;
@@ -62,6 +72,8 @@ type EditUserFormProps = {
 };
 
 const EditUserForm = ({
+  open = false,
+  onOpenChange = () => {},
   user = {
     id: "",
     firstName: "",
@@ -91,6 +103,7 @@ const EditUserForm = ({
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
     onSubmit(values);
+    onOpenChange(false);
   };
 
   const handlePasswordSubmit = (values: z.infer<typeof passwordSchema>) => {
@@ -100,6 +113,7 @@ const EditUserForm = ({
   const handleDelete = () => {
     if (confirm("Are you sure you want to delete this user?")) {
       onDelete(user.id);
+      onOpenChange(false);
     }
   };
 
@@ -115,15 +129,16 @@ const EditUserForm = ({
   ];
 
   return (
-    <div className="space-y-8">
-      <Card className="w-full bg-white shadow-lg rounded-lg">
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold">Edit User</CardTitle>
-          <CardDescription>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Edit User</DialogTitle>
+          <DialogDescription>
             Update user information and permissions
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="space-y-6">
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(handleSubmit)}
@@ -274,81 +289,36 @@ const EditUserForm = ({
                 </div>
               </div>
 
-              <div className="pt-4">
-                <Button type="submit" className="w-full" disabled={isLoading}>
+              <DialogFooter>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => onOpenChange(false)}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={isLoading}>
                   {isLoading ? "Saving..." : "Save Changes"}
                 </Button>
-              </div>
+              </DialogFooter>
             </form>
           </Form>
-        </CardContent>
-      </Card>
 
-      <Card className="w-full bg-white shadow-lg rounded-lg">
-        <CardHeader>
-          <CardTitle>Reset Password</CardTitle>
-          <CardDescription>Set a new password for this user</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...passwordForm}>
-            <form
-              onSubmit={passwordForm.handleSubmit(handlePasswordSubmit)}
-              className="space-y-4"
-            >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <FormField
-                  control={passwordForm.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>New Password</FormLabel>
-                      <FormControl>
-                        <Input type="password" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={passwordForm.control}
-                  name="confirmPassword"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Confirm New Password</FormLabel>
-                      <FormControl>
-                        <Input type="password" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <Button type="submit" variant="outline">
-                Reset Password
-              </Button>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
-
-      <Card className="w-full bg-white shadow-lg rounded-lg border-red-200">
-        <CardHeader>
-          <CardTitle className="text-red-600">Danger Zone</CardTitle>
-          <CardDescription>Actions here cannot be undone</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-muted-foreground mb-4">
-            Deleting this user will permanently remove their account and all
-            associated data from the system.
-          </p>
-          <Button variant="destructive" onClick={handleDelete}>
-            Delete User
-          </Button>
-        </CardContent>
-      </Card>
-    </div>
+          <div className="pt-4 border-t">
+            <h3 className="text-lg font-medium text-red-600 mb-2">
+              Danger Zone
+            </h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Deleting this user will permanently remove their account and all
+              associated data.
+            </p>
+            <Button variant="destructive" onClick={handleDelete}>
+              Delete User
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 };
 

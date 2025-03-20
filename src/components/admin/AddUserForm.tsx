@@ -22,6 +22,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import {
   Card,
   CardContent,
   CardDescription,
@@ -48,11 +56,15 @@ const formSchema = z
   });
 
 type AddUserFormProps = {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
   onSubmit?: (values: z.infer<typeof formSchema>) => void;
   isLoading?: boolean;
 };
 
 const AddUserForm = ({
+  open = false,
+  onOpenChange = () => {},
   onSubmit = () => {},
   isLoading = false,
 }: AddUserFormProps) => {
@@ -72,6 +84,7 @@ const AddUserForm = ({
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
     onSubmit(values);
+    onOpenChange(false);
   };
 
   const permissionItems = [
@@ -86,14 +99,15 @@ const AddUserForm = ({
   ];
 
   return (
-    <Card className="w-full max-w-2xl mx-auto bg-white shadow-lg rounded-lg">
-      <CardHeader>
-        <CardTitle className="text-2xl font-bold">Add New User</CardTitle>
-        <CardDescription>
-          Create a new user account with specific permissions
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Add New User</DialogTitle>
+          <DialogDescription>
+            Create a new user account with specific permissions
+          </DialogDescription>
+        </DialogHeader>
+
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
@@ -264,15 +278,22 @@ const AddUserForm = ({
               </div>
             </div>
 
-            <div className="pt-4">
-              <Button type="submit" className="w-full" disabled={isLoading}>
+            <DialogFooter>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" disabled={isLoading}>
                 {isLoading ? "Creating..." : "Create User"}
               </Button>
-            </div>
+            </DialogFooter>
           </form>
         </Form>
-      </CardContent>
-    </Card>
+      </DialogContent>
+    </Dialog>
   );
 };
 

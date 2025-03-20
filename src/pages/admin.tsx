@@ -15,6 +15,8 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import CurrencySelector from "@/components/admin/CurrencySelector";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import AddUserForm from "@/components/admin/AddUserForm";
+import EditUserForm from "@/components/admin/EditUserForm";
 import {
   Plus,
   UserPlus,
@@ -28,6 +30,118 @@ import {
 
 const Admin = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [showAddUserForm, setShowAddUserForm] = useState(false);
+  const [showEditUserForm, setShowEditUserForm] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+
+  // Mock users data
+  const [users, setUsers] = useState([
+    {
+      id: "1",
+      firstName: "John",
+      lastName: "Doe",
+      name: "John Doe",
+      email: "john@poultryfarm.com",
+      role: "admin",
+      status: "Active",
+      lastLogin: "2023-06-15 09:45 AM",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=john",
+      permissions: ["view-dashboard", "manage-users", "configure-farm"],
+    },
+    {
+      id: "2",
+      firstName: "Sarah",
+      lastName: "Johnson",
+      name: "Sarah Johnson",
+      email: "sarah@poultryfarm.com",
+      role: "manager",
+      status: "Active",
+      lastLogin: "2023-06-14 16:30 PM",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah",
+      permissions: ["view-dashboard", "manage-inventory", "manage-customers"],
+    },
+    {
+      id: "3",
+      firstName: "Mike",
+      lastName: "Brown",
+      name: "Mike Brown",
+      email: "mike@poultryfarm.com",
+      role: "staff",
+      status: "Active",
+      lastLogin: "2023-06-15 08:15 AM",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=mike",
+      permissions: ["view-dashboard", "manage-inventory"],
+    },
+    {
+      id: "4",
+      firstName: "Emily",
+      lastName: "Davis",
+      name: "Emily Davis",
+      email: "emily@poultryfarm.com",
+      role: "accountant",
+      status: "Inactive",
+      lastLogin: "2023-06-10 14:20 PM",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=emily",
+      permissions: ["view-dashboard", "manage-financials", "view-reports"],
+    },
+  ]);
+
+  const handleAddUser = (userData) => {
+    const newUser = {
+      id: (users.length + 1).toString(),
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      name: `${userData.firstName} ${userData.lastName}`,
+      email: userData.email,
+      role: userData.role,
+      status: "Active",
+      lastLogin: "Never",
+      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${userData.firstName.toLowerCase()}`,
+      permissions: userData.permissions,
+    };
+    setUsers([...users, newUser]);
+  };
+
+  const handleEditUser = (userData) => {
+    if (!currentUser) return;
+
+    const updatedUsers = users.map((user) => {
+      if (user.id === currentUser.id) {
+        return {
+          ...user,
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          name: `${userData.firstName} ${userData.lastName}`,
+          email: userData.email,
+          role: userData.role,
+          status: userData.isActive ? "Active" : "Inactive",
+          permissions: userData.permissions,
+        };
+      }
+      return user;
+    });
+
+    setUsers(updatedUsers);
+  };
+
+  const handleDeactivateUser = (userId) => {
+    const updatedUsers = users.map((user) => {
+      if (user.id === userId) {
+        return {
+          ...user,
+          status: user.status === "Active" ? "Inactive" : "Active",
+        };
+      }
+      return user;
+    });
+
+    setUsers(updatedUsers);
+  };
+
+  const openEditUserForm = (user) => {
+    setCurrentUser(user);
+    setShowEditUserForm(true);
+  };
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -68,7 +182,7 @@ const Admin = () => {
                       Manage system users and permissions
                     </p>
                   </div>
-                  <Button>
+                  <Button onClick={() => setShowAddUserForm(true)}>
                     <UserPlus className="h-4 w-4 mr-2" /> Add User
                   </Button>
                 </div>
@@ -86,170 +200,72 @@ const Admin = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td className="border p-2">
-                          <div className="flex items-center gap-2">
-                            <Avatar className="h-8 w-8">
-                              <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=john" />
-                              <AvatarFallback>JD</AvatarFallback>
-                            </Avatar>
-                            <div>John Doe</div>
-                          </div>
-                        </td>
-                        <td className="border p-2">john@poultryfarm.com</td>
-                        <td className="border p-2">
-                          <Badge
-                            variant="outline"
-                            className="bg-blue-50 text-blue-700 hover:bg-blue-50"
-                          >
-                            Admin
-                          </Badge>
-                        </td>
-                        <td className="border p-2">
-                          <Badge
-                            variant="outline"
-                            className="bg-green-50 text-green-700 hover:bg-green-50"
-                          >
-                            Active
-                          </Badge>
-                        </td>
-                        <td className="border p-2">2023-06-15 09:45 AM</td>
-                        <td className="border p-2">
-                          <Button variant="outline" size="sm" className="mr-2">
-                            Edit
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="text-red-500 border-red-200 hover:bg-red-50"
-                          >
-                            Deactivate
-                          </Button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="border p-2">
-                          <div className="flex items-center gap-2">
-                            <Avatar className="h-8 w-8">
-                              <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=sarah" />
-                              <AvatarFallback>SJ</AvatarFallback>
-                            </Avatar>
-                            <div>Sarah Johnson</div>
-                          </div>
-                        </td>
-                        <td className="border p-2">sarah@poultryfarm.com</td>
-                        <td className="border p-2">
-                          <Badge
-                            variant="outline"
-                            className="bg-purple-50 text-purple-700 hover:bg-purple-50"
-                          >
-                            Manager
-                          </Badge>
-                        </td>
-                        <td className="border p-2">
-                          <Badge
-                            variant="outline"
-                            className="bg-green-50 text-green-700 hover:bg-green-50"
-                          >
-                            Active
-                          </Badge>
-                        </td>
-                        <td className="border p-2">2023-06-14 16:30 PM</td>
-                        <td className="border p-2">
-                          <Button variant="outline" size="sm" className="mr-2">
-                            Edit
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="text-red-500 border-red-200 hover:bg-red-50"
-                          >
-                            Deactivate
-                          </Button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="border p-2">
-                          <div className="flex items-center gap-2">
-                            <Avatar className="h-8 w-8">
-                              <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=mike" />
-                              <AvatarFallback>MB</AvatarFallback>
-                            </Avatar>
-                            <div>Mike Brown</div>
-                          </div>
-                        </td>
-                        <td className="border p-2">mike@poultryfarm.com</td>
-                        <td className="border p-2">
-                          <Badge
-                            variant="outline"
-                            className="bg-green-50 text-green-700 hover:bg-green-50"
-                          >
-                            Staff
-                          </Badge>
-                        </td>
-                        <td className="border p-2">
-                          <Badge
-                            variant="outline"
-                            className="bg-green-50 text-green-700 hover:bg-green-50"
-                          >
-                            Active
-                          </Badge>
-                        </td>
-                        <td className="border p-2">2023-06-15 08:15 AM</td>
-                        <td className="border p-2">
-                          <Button variant="outline" size="sm" className="mr-2">
-                            Edit
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="text-red-500 border-red-200 hover:bg-red-50"
-                          >
-                            Deactivate
-                          </Button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="border p-2">
-                          <div className="flex items-center gap-2">
-                            <Avatar className="h-8 w-8">
-                              <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=emily" />
-                              <AvatarFallback>ED</AvatarFallback>
-                            </Avatar>
-                            <div>Emily Davis</div>
-                          </div>
-                        </td>
-                        <td className="border p-2">emily@poultryfarm.com</td>
-                        <td className="border p-2">
-                          <Badge
-                            variant="outline"
-                            className="bg-orange-50 text-orange-700 hover:bg-orange-50"
-                          >
-                            Accountant
-                          </Badge>
-                        </td>
-                        <td className="border p-2">
-                          <Badge
-                            variant="outline"
-                            className="bg-yellow-50 text-yellow-700 hover:bg-yellow-50"
-                          >
-                            Inactive
-                          </Badge>
-                        </td>
-                        <td className="border p-2">2023-06-10 14:20 PM</td>
-                        <td className="border p-2">
-                          <Button variant="outline" size="sm" className="mr-2">
-                            Edit
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="text-green-500 border-green-200 hover:bg-green-50"
-                          >
-                            Activate
-                          </Button>
-                        </td>
-                      </tr>
+                      {users.map((user) => (
+                        <tr key={user.id}>
+                          <td className="border p-2">
+                            <div className="flex items-center gap-2">
+                              <Avatar className="h-8 w-8">
+                                <AvatarImage src={user.avatar} />
+                                <AvatarFallback>
+                                  {user.name.charAt(0)}
+                                </AvatarFallback>
+                              </Avatar>
+                              <div>{user.name}</div>
+                            </div>
+                          </td>
+                          <td className="border p-2">{user.email}</td>
+                          <td className="border p-2">
+                            <Badge
+                              variant="outline"
+                              className={`${
+                                user.role === "admin"
+                                  ? "bg-blue-50 text-blue-700"
+                                  : user.role === "manager"
+                                    ? "bg-purple-50 text-purple-700"
+                                    : user.role === "accountant"
+                                      ? "bg-orange-50 text-orange-700"
+                                      : "bg-green-50 text-green-700"
+                              } hover:bg-opacity-75`}
+                            >
+                              {user.role.charAt(0).toUpperCase() +
+                                user.role.slice(1)}
+                            </Badge>
+                          </td>
+                          <td className="border p-2">
+                            <Badge
+                              variant="outline"
+                              className={`${user.status === "Active" ? "bg-green-50 text-green-700" : "bg-yellow-50 text-yellow-700"} hover:bg-opacity-75`}
+                            >
+                              {user.status}
+                            </Badge>
+                          </td>
+                          <td className="border p-2">{user.lastLogin}</td>
+                          <td className="border p-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="mr-2"
+                              onClick={() => openEditUserForm(user)}
+                            >
+                              Edit
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className={
+                                user.status === "Active"
+                                  ? "text-red-500 border-red-200 hover:bg-red-50"
+                                  : "text-green-500 border-green-200 hover:bg-green-50"
+                              }
+                              onClick={() => handleDeactivateUser(user.id)}
+                            >
+                              {user.status === "Active"
+                                ? "Deactivate"
+                                : "Activate"}
+                            </Button>
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
@@ -892,6 +908,23 @@ const Admin = () => {
           rights reserved.
         </footer>
       </div>
+
+      {/* Add User Form Dialog */}
+      <AddUserForm
+        open={showAddUserForm}
+        onOpenChange={setShowAddUserForm}
+        onSubmit={handleAddUser}
+      />
+
+      {/* Edit User Form Dialog */}
+      {currentUser && (
+        <EditUserForm
+          open={showEditUserForm}
+          onOpenChange={setShowEditUserForm}
+          user={currentUser}
+          onSubmit={handleEditUser}
+        />
+      )}
     </div>
   );
 };
