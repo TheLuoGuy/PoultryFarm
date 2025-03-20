@@ -15,13 +15,24 @@ export const CurrencyProvider: React.FC<CurrencyProviderProps> = ({
 }) => {
   // Try to get saved currency from localStorage, default to UGX
   const [currency, setCurrency] = useState<CurrencyType>(() => {
-    const savedCurrency = localStorage.getItem("currency");
-    if (savedCurrency) {
-      try {
-        return JSON.parse(savedCurrency);
-      } catch (e) {
-        return currencies[0]; // Default to UGX
+    // Clear any potentially corrupted currency data
+    try {
+      const savedCurrency = localStorage.getItem("currency");
+      if (savedCurrency) {
+        const parsed = JSON.parse(savedCurrency);
+        // Validate the parsed currency against our known currencies
+        const isValid = currencies.some((c) => c.code === parsed.code);
+        if (isValid) {
+          return parsed;
+        } else {
+          // If invalid, reset to default
+          localStorage.removeItem("currency");
+          return currencies[0]; // Default to UGX
+        }
       }
+    } catch (e) {
+      // If any error occurs, reset to default
+      localStorage.removeItem("currency");
     }
     return currencies[0]; // Default to UGX
   });
