@@ -284,12 +284,6 @@ const Admin = () => {
                     </p>
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    <Button>
-                      <Plus className="h-4 w-4 mr-2" /> Add Coup
-                    </Button>
-                    <Button variant="outline">
-                      <Bell className="h-4 w-4 mr-2" /> Configure Alerts
-                    </Button>
                     <Button variant="outline">
                       <Settings className="h-4 w-4 mr-2" /> Save Changes
                     </Button>
@@ -306,57 +300,110 @@ const Admin = () => {
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-4">
-                        <div className="flex justify-between items-center">
-                          <h3 className="text-sm font-medium">Active Coups</h3>
-                          <Button size="sm" variant="outline">
-                            <Plus className="h-4 w-4 mr-1" /> Add Coup
-                          </Button>
-                        </div>
-                        <div className="space-y-2">
-                          <div className="flex justify-between items-center p-2 bg-muted rounded">
-                            <span>Coup A</span>
-                            <span className="text-sm text-muted-foreground">
-                              Layers - Capacity: 1,500
-                            </span>
-                            <Button size="sm" variant="ghost">
-                              Edit
-                            </Button>
+                        <div className="space-y-4">
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">
+                              Add New Coup
+                            </label>
+                            <div className="grid grid-cols-2 gap-2">
+                              <div>
+                                <label className="text-xs text-muted-foreground">
+                                  Coup Name
+                                </label>
+                                <Input placeholder="Enter coup name" />
+                              </div>
+                              <div>
+                                <label className="text-xs text-muted-foreground">
+                                  Type
+                                </label>
+                                <select className="w-full p-2 border rounded-md">
+                                  <option value="layers">Layers</option>
+                                  <option value="broilers">Broilers</option>
+                                </select>
+                              </div>
+                              <div>
+                                <label className="text-xs text-muted-foreground">
+                                  Capacity
+                                </label>
+                                <Input
+                                  type="number"
+                                  placeholder="Enter capacity"
+                                />
+                              </div>
+                              <div className="flex items-end">
+                                <Button className="w-full">Add Coup</Button>
+                              </div>
+                            </div>
                           </div>
-                          <div className="flex justify-between items-center p-2 bg-muted rounded">
-                            <span>Coup B</span>
-                            <span className="text-sm text-muted-foreground">
-                              Layers - Capacity: 1,200
-                            </span>
-                            <Button size="sm" variant="ghost">
-                              Edit
-                            </Button>
-                          </div>
-                          <div className="flex justify-between items-center p-2 bg-muted rounded">
-                            <span>Coup C</span>
-                            <span className="text-sm text-muted-foreground">
-                              Layers - Capacity: 1,000
-                            </span>
-                            <Button size="sm" variant="ghost">
-                              Edit
-                            </Button>
-                          </div>
-                          <div className="flex justify-between items-center p-2 bg-muted rounded">
-                            <span>Coup D</span>
-                            <span className="text-sm text-muted-foreground">
-                              Broilers - Capacity: 1,200
-                            </span>
-                            <Button size="sm" variant="ghost">
-                              Edit
-                            </Button>
-                          </div>
-                          <div className="flex justify-between items-center p-2 bg-muted rounded">
-                            <span>Coup E</span>
-                            <span className="text-sm text-muted-foreground">
-                              Broilers - Capacity: 1,000
-                            </span>
-                            <Button size="sm" variant="ghost">
-                              Edit
-                            </Button>
+                          <div className="space-y-2">
+                            <h3 className="text-sm font-medium">
+                              Active Coups
+                            </h3>
+                            <div className="flex justify-between items-center p-2 bg-muted rounded">
+                              <span>Coup A</span>
+                              <span className="text-sm text-muted-foreground">
+                                Layers - Capacity: 1,500
+                              </span>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => alert("Edit Coup A")}
+                              >
+                                Edit
+                              </Button>
+                            </div>
+                            <div className="flex justify-between items-center p-2 bg-muted rounded">
+                              <span>Coup B</span>
+                              <span className="text-sm text-muted-foreground">
+                                Layers - Capacity: 1,200
+                              </span>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => alert("Edit Coup B")}
+                              >
+                                Edit
+                              </Button>
+                            </div>
+                            <div className="flex justify-between items-center p-2 bg-muted rounded">
+                              <span>Coup C</span>
+                              <span className="text-sm text-muted-foreground">
+                                Layers - Capacity: 1,000
+                              </span>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => alert("Edit Coup C")}
+                              >
+                                Edit
+                              </Button>
+                            </div>
+                            <div className="flex justify-between items-center p-2 bg-muted rounded">
+                              <span>Coup D</span>
+                              <span className="text-sm text-muted-foreground">
+                                Broilers - Capacity: 1,200
+                              </span>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => alert("Edit Coup D")}
+                              >
+                                Edit
+                              </Button>
+                            </div>
+                            <div className="flex justify-between items-center p-2 bg-muted rounded">
+                              <span>Coup E</span>
+                              <span className="text-sm text-muted-foreground">
+                                Broilers - Capacity: 1,000
+                              </span>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => alert("Edit Coup E")}
+                              >
+                                Edit
+                              </Button>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -540,7 +587,7 @@ const Admin = () => {
                     </CardContent>
                   </Card>
 
-                  <CurrencySelector />
+                  {/* Currency selector removed as requested */}
                 </div>
               </TabsContent>
 
@@ -590,7 +637,11 @@ const Admin = () => {
                           </span>
                           <span>2023-06-15 02:00 AM</span>
                         </div>
-                        <Button className="w-full" variant="outline">
+                        <Button
+                          className="w-full"
+                          variant="outline"
+                          onClick={() => alert("Backup started")}
+                        >
                           <Download className="h-4 w-4 mr-2" /> Backup Now
                         </Button>
                       </div>
@@ -633,7 +684,13 @@ const Admin = () => {
                           </span>
                           <span>30 minutes</span>
                         </div>
-                        <Button className="w-full" variant="outline">
+                        <Button
+                          className="w-full"
+                          variant="outline"
+                          onClick={() =>
+                            alert("Security settings would open here")
+                          }
+                        >
                           Security Settings
                         </Button>
                       </div>
@@ -681,7 +738,13 @@ const Admin = () => {
                             Enabled
                           </Badge>
                         </div>
-                        <Button className="w-full" variant="outline">
+                        <Button
+                          className="w-full"
+                          variant="outline"
+                          onClick={() =>
+                            alert("Notification settings would open here")
+                          }
+                        >
                           Configure Notifications
                         </Button>
                       </div>
@@ -700,6 +763,7 @@ const Admin = () => {
                         <Button
                           variant="outline"
                           className="h-auto py-4 flex flex-col items-center justify-center"
+                          onClick={() => alert("Cache cleared successfully")}
                         >
                           <div className="text-primary mb-2">Clear Cache</div>
                           <div className="text-xs text-muted-foreground text-center">
@@ -709,6 +773,7 @@ const Admin = () => {
                         <Button
                           variant="outline"
                           className="h-auto py-4 flex flex-col items-center justify-center"
+                          onClick={() => alert("Database optimization started")}
                         >
                           <div className="text-primary mb-2">
                             Optimize Database
@@ -720,6 +785,7 @@ const Admin = () => {
                         <Button
                           variant="outline"
                           className="h-auto py-4 flex flex-col items-center justify-center"
+                          onClick={() => alert("Checking for updates...")}
                         >
                           <div className="text-primary mb-2">
                             Check for Updates

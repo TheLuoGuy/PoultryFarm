@@ -120,41 +120,7 @@ const Settings = () => {
                           </select>
                         </div>
 
-                        <div className="space-y-4 pt-4 border-t mt-4">
-                          <Label>Currency</Label>
-                          <RadioGroup
-                            defaultValue={currency.code}
-                            onValueChange={(value) => {
-                              const selectedCurrency = currencies.find(
-                                (c) => c.code === value,
-                              );
-                              if (selectedCurrency)
-                                setCurrency(selectedCurrency);
-                            }}
-                            className="grid grid-cols-1 md:grid-cols-2 gap-2"
-                          >
-                            {currencies.map((curr) => (
-                              <div
-                                key={curr.code}
-                                className="flex items-center space-x-2 border p-2 rounded-md"
-                              >
-                                <RadioGroupItem
-                                  value={curr.code}
-                                  id={`currency-${curr.code}`}
-                                />
-                                <Label
-                                  htmlFor={`currency-${curr.code}`}
-                                  className="flex-1 cursor-pointer"
-                                >
-                                  <div className="font-medium">{curr.name}</div>
-                                  <div className="text-sm text-muted-foreground">
-                                    {curr.symbol} ({curr.code})
-                                  </div>
-                                </Label>
-                              </div>
-                            ))}
-                          </RadioGroup>
-                        </div>
+                        {/* Currency section removed as requested */}
                       </CardContent>
                     </Card>
                   </div>
