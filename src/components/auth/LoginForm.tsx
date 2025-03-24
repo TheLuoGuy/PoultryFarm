@@ -158,6 +158,7 @@ const LoginForm = ({
                 variant="link"
                 className="text-sm p-0 h-auto"
                 type="button"
+                onClick={() => (window.location.href = "/forgot-password")}
               >
                 Forgot password?
               </Button>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Home,
   Package,
@@ -68,6 +68,7 @@ const NavItem = ({
 
 const Sidebar = ({ collapsed = false, onToggle = () => {} }: SidebarProps) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const currentPath = location.pathname;
 
   // Mock user data
@@ -168,6 +169,14 @@ const Sidebar = ({ collapsed = false, onToggle = () => {} }: SidebarProps) => {
                   variant="ghost"
                   size="icon"
                   className="text-muted-foreground hover:text-foreground"
+                  onClick={() => {
+                    // Clear any auth tokens or user data from localStorage
+                    localStorage.removeItem("user");
+                    localStorage.removeItem("token");
+
+                    // Redirect to login page
+                    navigate("/");
+                  }}
                 >
                   <LogOut size={18} />
                 </Button>

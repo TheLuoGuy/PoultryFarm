@@ -13,6 +13,7 @@ const Profile = lazy(() => import("./pages/profile"));
 const Settings = lazy(() => import("./pages/settings"));
 const Notifications = lazy(() => import("./pages/notifications"));
 const Help = lazy(() => import("./pages/help"));
+const ForgotPassword = lazy(() => import("./pages/forgot-password"));
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path="/settings" element={<Settings />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/help" element={<Help />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
 
           {/* Add this before any catchall route */}
           {import.meta.env.VITE_TEMPO === "true" && (
